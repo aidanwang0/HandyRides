@@ -1,25 +1,59 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="main"> 
-  <table>
-      {% for person in people %}
-      <tr>
-          <td>{{ person.first_name }}</td> 
-          <td>{{ person.origination }}</td>
-          <td>{{ person.destination_city }}</td> 
-          <td>{{ person.destination_state }}</td> 
-          <td>{{ person.date }}</td> 
-          <td>{{ person.time }}</td> 
-          <td>{{ person.taking_passengers }}</td>
-          <td>{{ person.seats_available }}</td> 
-      </tr>
-      {% endfor %} 
-  </table>
-</div> 
+<div class="spaced-section">
+  <div class="form-card">
+    <h2>Find ride-share registrants</h2>
+    <p>Search by state (2-letter abbreviation) and optionally by city to see who might share a ride to or from the event.</p>
 
-<form action="{% url 'rides:index' %}" method="get">
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+    <form action="{% url 'rides:index' %}" method="get" onsubmit="return checkForm();">
+      {{ form.as_p }}
+      <input type="submit" value="Search" class="btn-primary">
+    </form>
+  </div>
+</div>
+
+{% if inputExists %}
+  <div class="spaced-section">
+    <h3>Results</h3>
+    {% if people %}
+    <div class="table-wrapper">
+      <table class="rides-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Origin City</th>
+            <th>Origin State</th>
+            <th>Destination City</th>
+            <th>Destination State</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Taking passengers?</th>
+            <th>Seats available</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for person in people %}
+          <tr>
+            <td>{{ person.first_name }}{% if person.last_name %} {{ person.last_name }}{% endif %}</td>
+            <td>{{ person.email|default:"—" }}</td>
+            <td>{{ person.origin_city|default:"—" }}</td>
+            <td>{{ person.origination_state|default:"—" }}</td>
+            <td>{{ person.destination_city }}</td>
+            <td>{{ person.destination_state }}</td>
+            <td>{{ person.date }}</td>
+            <td>{{ person.time|time:"g:i A" }}</td>
+            <td>{{ person.taking_passengers|yesno:"Yes,No" }}</td>
+            <td>{{ person.seats_available }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No registrants found for that state{% if request.GET.city %} and city{% endif %}.</p>
+    {% endif %}
+  </div>
+{% endif %}
 {% endblock %}

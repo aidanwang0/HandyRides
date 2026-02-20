@@ -4,15 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIGER RIDES</title>
   <link rel="stylesheet" href="{% static 'main.css' %}"/>
   <script src="{% static 'main.js' %}"></script>
-  <title>TIGER RIDES</title>
 </head>
 <body>
   <header class="site-header">
     <nav>
-      <a href="/" class="nav-link">TIGER RIDES</a>
-      <a href="/rides/" class="nav-link active">Search Rides</a>
+      <a href="/" class="nav-link active">TIGER RIDES</a>
+      <a href="/rides/" class="nav-link">Search Rides</a>
     </nav>
   </header>
 
@@ -27,8 +27,13 @@
       <p class="hero-tagline">Princeton Reunions ride-share</p>
     </section>
 
-    {% block content %}
-    {% endblock %}
+    <div class="content-card">
+      <p class="splash-welcome">Welcome to Tiger Rides.</p>
+      <p class="splash-intro">Find ride-shares to and from Princeton Reunions. Search by state and city to see who else is heading the same way.</p>
+      <p class="splash-cta">
+        <a href="/rides/" class="btn-cta">Go to Search Page</a>
+      </p>
+    </div>
   </main>
 
   <footer class="site-footer">
